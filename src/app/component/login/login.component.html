@@ -2,87 +2,63 @@
 
   <mat-card class="login-card">
 
-    <div class="logo">
-      TF
-    </div>
+    <div class="logo">TF</div>
 
     <h1 class="title">TaskFlow Pro</h1>
 
-    <p class="subtitle">
-      Sign in to access your workspace
-    </p>
+    <p class="subtitle">Sign in to access your workspace</p>
 
     <form #loginForm="ngForm">
 
-      <!-- Email -->
+      <!-- Email Field -->
       <mat-form-field appearance="outline" class="full-width">
-
         <mat-label>Email Address</mat-label>
-
         <mat-icon matPrefix>mail</mat-icon>
-
-        <input
-          matInput
-          type="email"
-          name="email"
-          required
-          email
-          #email="ngModel"
+        <input matInput type="email" name="email"
+          required email #email="ngModel"
           [(ngModel)]="loginObj.Email">
-
         <mat-error *ngIf="email.invalid && email.touched">
-          Valid email format is required.
+          Valid email is required.
         </mat-error>
-
       </mat-form-field>
 
-      <!-- Password -->
+      <!-- Password Field -->
       <mat-form-field appearance="outline" class="full-width">
-
         <mat-label>Password</mat-label>
-
         <mat-icon matPrefix>lock</mat-icon>
-
-        <input
-          matInput
+        <input matInput
           [type]="hidePassword ? 'password' : 'text'"
-          name="password"
-          required
-          minlength="6"
+          name="password" required minlength="6"
           #password="ngModel"
           [(ngModel)]="loginObj.Password">
-
-        <!-- Show Hide Password -->
-        <button
-          mat-icon-button
-          matSuffix
-          type="button"
+        <button mat-icon-button matSuffix type="button"
           (click)="hidePassword = !hidePassword">
-
           <mat-icon>
             {{ hidePassword ? 'visibility_off' : 'visibility' }}
           </mat-icon>
-
         </button>
-
         <mat-error *ngIf="password.invalid && password.touched">
           Password must be at least 6 characters.
         </mat-error>
-
       </mat-form-field>
 
       <div class="forgot-password">
         <a href="#">Forgot password?</a>
       </div>
 
-      <button
-        mat-raised-button
-        color="primary"
-        class="login-btn"
-        [disabled]="loginForm.invalid"
+      <!-- Sign In Button -->
+      <button mat-raised-button color="primary" class="login-btn"
+        [disabled]="loginForm.invalid || isLoading"
         (click)="login()">
 
-        Sign In
+        <!-- Spinner shown while loading -->
+        <mat-spinner
+          *ngIf="isLoading"
+          diameter="20"
+          style="display:inline-block; vertical-align:middle; margin-right:8px;">
+        </mat-spinner>
+
+        {{ isLoading ? 'Signing in...' : 'Sign In' }}
 
       </button>
 
