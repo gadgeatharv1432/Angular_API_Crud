@@ -1,1 +1,87 @@
-<p>dashboard works!</p>
+<!-- src/app/component/dashboard/dashboard.component.html -->
+<div class="page-container">
+
+  <div class="page-header">
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-subtitle">Overview of all tasks across the team</p>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+
+    <!-- Stats Cards Row -->
+    <div class="stats-grid">
+
+      <mat-card class="stat-card card-blue">
+        <mat-icon>assignment</mat-icon>
+        <div class="stat-value">{{ totalTasks }}</div>
+        <div class="stat-label">Total Tasks</div>
+      </mat-card>
+
+      <mat-card class="stat-card card-green">
+        <mat-icon>check_circle</mat-icon>
+        <div class="stat-value">{{ completedTasks }}</div>
+        <div class="stat-label">Completed</div>
+      </mat-card>
+
+      <mat-card class="stat-card card-orange">
+        <mat-icon>pending</mat-icon>
+        <div class="stat-value">{{ pendingTasks }}</div>
+        <div class="stat-label">Pending</div>
+      </mat-card>
+
+      <mat-card class="stat-card card-red">
+        <mat-icon>priority_high</mat-icon>
+        <div class="stat-value">{{ highPriority }}</div>
+        <div class="stat-label">High Priority</div>
+      </mat-card>
+
+      <mat-card class="stat-card card-purple">
+        <mat-icon>autorenew</mat-icon>
+        <div class="stat-value">{{ inProgress }}</div>
+        <div class="stat-label">In Progress</div>
+      </mat-card>
+
+    </div>
+
+    <!-- Recent Tasks -->
+    <mat-card class="recent-card">
+
+      <mat-card-header>
+        <mat-card-title>Recent Tasks</mat-card-title>
+        <mat-card-subtitle>Latest 5 tasks in the system</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div *ngFor="let task of recentTasks" class="task-row">
+
+          <div class="task-info">
+            <div class="task-name">{{ task.taskName }}</div>
+            <div class="task-meta">{{ task.assignee }} · Due {{ task.dueDate | date: 'dd MMM' }}</div>
+          </div>
+
+          <div class="task-badges">
+            <span class="chip" [ngClass]="getPriorityClass(task.taskPriority)">
+              {{ task.taskPriority }}
+            </span>
+            <span class="chip" [ngClass]="getStatusClass(task.taskStatus)">
+              {{ task.taskStatus }}
+            </span>
+          </div>
+
+        </div>
+
+        <div *ngIf="recentTasks.length === 0" class="no-tasks">
+          No tasks yet.
+        </div>
+
+      </mat-card-content>
+
+    </mat-card>
+
+  </ng-container>
+
+</div>

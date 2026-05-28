@@ -1,0 +1,28 @@
+.sidebar {
+    width: 220px;
+    background: white;
+    border-right: 1px solid #e5e7eb;
+    height: 100%;
+    padding-top: 16px;
+}
+
+mat-nav-list a {
+    color: #374151;
+    border-radius: 8px;
+    margin: 4px 8px;
+}
+
+mat-nav-list a:hover {
+    background: #eff6ff;
+    color: #1e40af;
+}
+
+.active-link {
+    background: #eff6ff !important;
+    color: #1e40af !important;
+    font-weight: 600;
+}
+
+.active-link mat-icon {
+    color: #1e40af !important;
+}

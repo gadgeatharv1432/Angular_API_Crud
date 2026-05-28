@@ -1,0 +1,79 @@
+<!-- src/app/component/task-dialog/task-dialog.component.html -->
+<div class="dialog-header">
+  <h2 mat-dialog-title>{{ dialogTitle }}</h2>
+  <button mat-icon-button (click)="cancel()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="dialog-content">
+
+  <!-- Task Name -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Task Name</mat-label>
+    <input matInput [(ngModel)]="taskObj.taskName"
+      name="taskName" required
+      placeholder="Enter task name">
+  </mat-form-field>
+
+  <!-- Description -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Description</mat-label>
+    <textarea matInput [(ngModel)]="taskObj.taskDescription"
+      name="taskDescription" rows="3"
+      placeholder="Enter task description"></textarea>
+  </mat-form-field>
+
+  <div class="row-2">
+
+    <!-- Priority -->
+    <mat-form-field appearance="outline" class="half-width">
+      <mat-label>Priority</mat-label>
+      <mat-select [(ngModel)]="taskObj.taskPriority" name="taskPriority">
+        <mat-option *ngFor="let p of priorityOptions" [value]="p">
+          {{ p }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Status -->
+    <mat-form-field appearance="outline" class="half-width">
+      <mat-label>Status</mat-label>
+      <mat-select [(ngModel)]="taskObj.taskStatus" name="taskStatus">
+        <mat-option *ngFor="let s of statusOptions" [value]="s">
+          {{ s }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </div>
+
+  <div class="row-2">
+
+    <!-- Assignee -->
+    <mat-form-field appearance="outline" class="half-width">
+      <mat-label>Assignee</mat-label>
+      <input matInput [(ngModel)]="taskObj.assignee"
+        name="assignee" required
+        placeholder="Assign to">
+    </mat-form-field>
+
+    <!-- Due Date -->
+    <mat-form-field appearance="outline" class="half-width">
+      <mat-label>Due Date</mat-label>
+      <input matInput [(ngModel)]="taskObj.dueDate"
+        name="dueDate" type="date">
+    </mat-form-field>
+
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+  <button mat-stroked-button (click)="cancel()">Cancel</button>
+  <button mat-raised-button color="primary"
+    [disabled]="!taskObj.taskName || !taskObj.assignee"
+    (click)="save()">
+    {{ isEditMode ? 'Update Task' : 'Add Task' }}
+  </button>
+</mat-dialog-actions>

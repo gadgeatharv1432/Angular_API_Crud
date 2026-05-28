@@ -1,0 +1,20 @@
+/* src/app/component/layout/layout.component.css */
+.app-shell {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.shell-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+    background: #f3f4f6;
+    padding: 24px;
+}

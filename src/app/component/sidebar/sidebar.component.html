@@ -1,1 +1,24 @@
-<p>sidebar works!</p>
+<nav class="sidebar">
+
+  <mat-nav-list>
+
+    <!-- Dashboard — only shown to Admin -->
+    <a mat-list-item
+      *ngIf="userRole === 'Admin'"
+      routerLink="/dashboard"
+      routerLinkActive="active-link">
+      <mat-icon matListItemIcon>dashboard</mat-icon>
+      <span matListItemTitle>Dashboard</span>
+    </a>
+
+    <!-- Tasks — shown to everyone -->
+    <a mat-list-item
+      routerLink="/task"
+      routerLinkActive="active-link">
+      <mat-icon matListItemIcon>task_alt</mat-icon>
+      <span matListItemTitle>My Tasks</span>
+    </a>
+
+  </mat-nav-list>
+
+</nav>
