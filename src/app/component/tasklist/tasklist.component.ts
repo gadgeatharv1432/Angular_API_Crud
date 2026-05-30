@@ -15,7 +15,8 @@ import Swal from 'sweetalert2';
 
 import { Task } from '../../interfaces/task';
 import { TaskserviceService } from '../../service/taskservice.service';
-import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
+import { TaskDialogComponent } from '../../task-dialog/task-dialog/task-dialog.component';
+
 
 @Component({
     selector: 'app-tasklist',
