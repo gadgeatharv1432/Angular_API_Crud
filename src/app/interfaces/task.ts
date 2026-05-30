@@ -5,6 +5,6 @@ export interface Task {
     taskPriority: string;
     taskStatus: string;
     assignee: string;
-    dueDate: string;
+    dueDate?: string;
     isCompleted: boolean;
 }
