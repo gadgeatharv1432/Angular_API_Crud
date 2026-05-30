@@ -75,9 +75,14 @@ export class TasklistComponent implements OnInit {
                 this.allTasks = res.data;
                 this.filteredTasks = res.data;
             },
-            error: () => {
+            error: (err) => {
                 this.isLoading = false;
-                Swal.fire('Error', 'Could not load tasks.', 'error');
+                console.error('Load tasks error:', err);   // ← prints full error in browser console
+                Swal.fire(
+                    'Error',
+                    err.error?.message || err.message || 'Could not load tasks.',
+                    'error'
+                );
             }
         });
     }
@@ -115,7 +120,14 @@ export class TasklistComponent implements OnInit {
                         });
                         this.loadTasks();  // Refresh the table
                     },
-                    error: () => Swal.fire('Error', 'Could not create task.', 'error')
+                    error: (err) => {
+                        console.error('Create task error:', err);
+                        Swal.fire(
+                            'Error',
+                            err.error?.message || err.message || 'Could not create task.',
+                            'error'
+                        );
+                    }
                 });
             }
         });
@@ -139,7 +151,14 @@ export class TasklistComponent implements OnInit {
                         });
                         this.loadTasks();
                     },
-                    error: () => Swal.fire('Error', 'Could not update task.', 'error')
+                    error: (err) => {
+                        console.error('Update task error:', err);
+                        Swal.fire(
+                            'Error',
+                            err.error?.message || err.message || 'Could not update task.',
+                            'error'
+                        );
+                    }
                 });
             }
         });
