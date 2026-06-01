@@ -1,11 +1,12 @@
 // src/app/component/navbar/navbar.component.ts
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';   // ← ADD RouterLink
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';  // ← ADD
 import { AuthserviceService } from '../../service/authservice.service';
 
 @Component({
@@ -13,10 +14,12 @@ import { AuthserviceService } from '../../service/authservice.service';
     standalone: true,
     imports: [
         CommonModule,
+        RouterLink,           // ← ADD: needed for routerLink in template
         MatToolbarModule,
         MatButtonModule,
         MatIconModule,
-        MatMenuModule
+        MatMenuModule,
+        MatDividerModule      // ← ADD: needed for mat-divider
     ],
     templateUrl: './navbar.component.html',
     styleUrl: './navbar.component.css'
@@ -32,7 +35,6 @@ export class NavbarComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        // Read user info stored during login
         const userJson = localStorage.getItem('user');
         if (userJson) {
             const user = JSON.parse(userJson);

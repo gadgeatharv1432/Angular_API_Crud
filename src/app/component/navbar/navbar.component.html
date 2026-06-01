@@ -1,6 +1,7 @@
+<!-- src/app/component/navbar/navbar.component.html -->
 <mat-toolbar class="navbar">
 
-  <!-- Search Box — visual element matching PDF -->
+  <!-- Search Box -->
   <div style="
     display: flex;
     align-items: center;
@@ -20,18 +21,16 @@
     </span>
   </div>
 
-  <!-- Spacer — pushes right items to the edge -->
   <span class="spacer"></span>
 
-  <!-- Right side controls -->
   <div class="navbar-right">
 
-    <!-- Notification Bell -->
+    <!-- Bell -->
     <button mat-icon-button style="color: #6b7280;">
       <mat-icon>notifications_none</mat-icon>
     </button>
 
-    <!-- User info + dropdown menu -->
+    <!-- User info + dropdown -->
     <div class="user-info" [matMenuTriggerFor]="userMenu">
       <mat-icon>account_circle</mat-icon>
       <span class="user-name">{{ userName }}</span>
@@ -41,12 +40,22 @@
       </mat-icon>
     </div>
 
-    <!-- Dropdown menu -->
+    <!-- Dropdown — now has Profile + Logout -->
     <mat-menu #userMenu="matMenu" xPosition="before">
+
+      <!-- Profile link ← NEW -->
+      <button mat-menu-item routerLink="/profile">
+        <mat-icon>person_outline</mat-icon>
+        <span>Profile Settings</span>
+      </button>
+
+      <mat-divider></mat-divider>
+
       <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>
         <span>Logout</span>
       </button>
+
     </mat-menu>
 
   </div>

@@ -1,0 +1,190 @@
+<div class="page-container">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Profile Settings</h1>
+      <p class="page-subtitle">Manage your account details and security preferences.</p>
+    </div>
+  </div>
+
+  <!-- Loading state while profile data is being fetched -->
+  <div *ngIf="isLoadingProfile" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <!-- Main Profile Card — shown after data loads -->
+  <mat-card class="profile-card" *ngIf="!isLoadingProfile">
+    <mat-card-content class="card-content">
+
+      <!-- ── LEFT COLUMN: Avatar + Upload ────────────────────── -->
+      <div class="left-col">
+
+        <!-- Avatar circle with user's initial -->
+        <div class="avatar-circle">
+          <span class="avatar-initial">{{ avatarInitial }}</span>
+        </div>
+
+        <!-- Upload Photo button — visual, no backend yet -->
+        <button mat-stroked-button class="upload-btn" type="button">
+          Upload Photo
+        </button>
+
+        <!-- File hint text -->
+        <p class="upload-hint">JPG, GIF or PNG. Max size of 800K</p>
+
+      </div>
+
+      <!-- ── RIGHT COLUMN: Forms ─────────────────────────────── -->
+      <div class="right-col">
+
+        <!-- ══ SECTION 1: Personal Information ═══════════════ -->
+        <h3 class="section-title">Personal Information</h3>
+
+        <!-- Full Name + Email Address — side by side -->
+        <div class="form-row">
+
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <mat-form-field appearance="outline" class="full-width">
+              <input
+                matInput
+                [(ngModel)]="updateForm.userName"
+                name="userName"
+                placeholder="Enter your full name">
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <mat-form-field appearance="outline" class="full-width">
+              <input
+                matInput
+                [value]="profile.email"
+                name="email"
+                readonly
+                class="readonly-field">
+            </mat-form-field>
+          </div>
+
+        </div>
+
+        <!-- Role — full width, read-only -->
+        <div class="form-group">
+          <label class="form-label">Role</label>
+          <mat-form-field appearance="outline" class="full-width">
+            <input
+              matInput
+              [value]="profile.role"
+              name="role"
+              readonly
+              class="readonly-field">
+          </mat-form-field>
+        </div>
+
+        <!-- ══ SECTION 2: Change Password ════════════════════ -->
+        <h3 class="section-title" style="margin-top: 24px;">Change Password</h3>
+
+        <!-- Current Password — full width -->
+        <div class="form-group">
+          <label class="form-label">Current Password</label>
+          <mat-form-field appearance="outline" class="full-width">
+            <input
+              matInput
+              [type]="hideCurrentPassword ? 'password' : 'text'"
+              [(ngModel)]="passwordForm.currentPassword"
+              name="currentPassword"
+              placeholder="Enter current password">
+            <button mat-icon-button matSuffix type="button"
+              (click)="hideCurrentPassword = !hideCurrentPassword">
+              <mat-icon style="font-size:18px;">
+                {{ hideCurrentPassword ? 'visibility_off' : 'visibility' }}
+              </mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+
+        <!-- New Password + Confirm Password — side by side -->
+        <div class="form-row">
+
+          <div class="form-group">
+            <label class="form-label">New Password</label>
+            <mat-form-field appearance="outline" class="full-width">
+              <input
+                matInput
+                [type]="hideNewPassword ? 'password' : 'text'"
+                [(ngModel)]="passwordForm.newPassword"
+                name="newPassword"
+                placeholder="Enter new password">
+              <button mat-icon-button matSuffix type="button"
+                (click)="hideNewPassword = !hideNewPassword">
+                <mat-icon style="font-size:18px;">
+                  {{ hideNewPassword ? 'visibility_off' : 'visibility' }}
+                </mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Confirm Password</label>
+            <mat-form-field appearance="outline" class="full-width">
+              <input
+                matInput
+                [type]="hideConfirmPassword ? 'password' : 'text'"
+                [(ngModel)]="passwordForm.confirmPassword"
+                name="confirmPassword"
+                placeholder="Confirm new password">
+              <button mat-icon-button matSuffix type="button"
+                (click)="hideConfirmPassword = !hideConfirmPassword">
+                <mat-icon style="font-size:18px;">
+                  {{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}
+                </mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+
+        </div>
+
+        <!-- ── Action Buttons Row ────────────────────────────── -->
+        <div class="actions-row">
+
+          <!-- Save Profile Changes -->
+          <button
+            mat-raised-button
+            class="update-btn"
+            type="button"
+            [disabled]="isSavingProfile"
+            (click)="saveProfile()">
+            <mat-spinner
+              *ngIf="isSavingProfile"
+              diameter="16"
+              style="display:inline-block; margin-right:6px;">
+            </mat-spinner>
+            {{ isSavingProfile ? 'Saving...' : 'Update Profile' }}
+          </button>
+
+          <!-- Change Password (only visible if password fields have data) -->
+          <button
+            mat-stroked-button
+            class="password-btn"
+            type="button"
+            *ngIf="passwordForm.currentPassword"
+            [disabled]="isChangingPassword"
+            (click)="changePassword()">
+            <mat-spinner
+              *ngIf="isChangingPassword"
+              diameter="16"
+              style="display:inline-block; margin-right:6px;">
+            </mat-spinner>
+            {{ isChangingPassword ? 'Changing...' : 'Change Password' }}
+          </button>
+
+        </div>
+
+      </div>
+      <!-- end right-col -->
+
+    </mat-card-content>
+  </mat-card>
+
+</div>

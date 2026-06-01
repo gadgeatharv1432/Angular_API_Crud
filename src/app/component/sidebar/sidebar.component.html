@@ -1,6 +1,7 @@
+<!-- src/app/component/sidebar/sidebar.component.html -->
 <nav class="sidebar">
 
-  <!-- Brand Area — top of sidebar, matches PDF "Enterprise" header -->
+  <!-- Brand Area -->
   <div class="sidebar-brand">
     <div class="brand-icon">
       <mat-icon style="font-size:20px; color:white;">grid_view</mat-icon>
@@ -11,30 +12,39 @@
   </div>
 
   <!-- Navigation Items -->
-<mat-nav-list class="nav-list">
+  <mat-nav-list class="nav-list">
 
-  <!-- Dashboard -->
-  <a
-    mat-list-item
-    *ngIf="userRole === 'Admin'"
-    routerLink="/dashboard"
-    routerLinkActive="active-link">
+    <!-- Dashboard — Admin only -->
+    <a
+      mat-list-item
+      *ngIf="userRole === 'Admin'"
+      routerLink="/dashboard"
+      routerLinkActive="active-link"
+      class="nav-item">
+      <mat-icon matListItemIcon>dashboard</mat-icon>
+      <span matListItemTitle>Dashboard</span>
+    </a>
 
-    <mat-icon matListItemIcon>dashboard</mat-icon>
-    <span matListItemTitle>Dashboard</span>
+    <!-- Tasks — all users -->
+    <a
+      mat-list-item
+      routerLink="/task"
+      routerLinkActive="active-link"
+      class="nav-item">
+      <mat-icon matListItemIcon>check_box_outline_blank</mat-icon>
+      <span matListItemTitle>Tasks</span>
+    </a>
 
-  </a>
+    <!-- Profile — all users ← NEW -->
+    <a
+      mat-list-item
+      routerLink="/profile"
+      routerLinkActive="active-link"
+      class="nav-item">
+      <mat-icon matListItemIcon>person_outline</mat-icon>
+      <span matListItemTitle>Profile</span>
+    </a>
 
-  <!-- Tasks -->
-  <a
-    mat-list-item
-    routerLink="/task"
-    routerLinkActive="active-link">
+  </mat-nav-list>
 
-    <mat-icon matListItemIcon>check_box_outline_blank</mat-icon>
-    <span matListItemTitle>Tasks</span>
-
-  </a>
-
-</mat-nav-list>
 </nav>

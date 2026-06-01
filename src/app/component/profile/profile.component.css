@@ -1,0 +1,185 @@
+.page-container {
+    max-width: 900px;
+}
+
+/* Page header */
+.page-header {
+    margin-bottom: 24px;
+}
+
+.page-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+.page-subtitle {
+    color: #6b7280;
+    font-size: 14px;
+    margin: 4px 0 0;
+}
+
+/* Loading state */
+.loading-container {
+    display: flex;
+    justify-content: center;
+    padding: 60px;
+}
+
+/* Main white card */
+.profile-card {
+    border-radius: 12px !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid #f3f4f6 !important;
+}
+
+/* Card content: flex row — left col + right col */
+.card-content {
+    display: flex !important;
+    gap: 48px;
+    padding: 32px !important;
+    align-items: flex-start;
+}
+
+/* ── LEFT COLUMN ──────────────────────────────────── */
+.left-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 160px;
+    flex-shrink: 0;    /* Never shrink — stays at 160px always */
+    padding-top: 8px;
+}
+
+/* Avatar circle — large, shows user's initial */
+.avatar-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.30);
+}
+
+.avatar-initial {
+    color: white;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* Upload Photo button */
+.upload-btn {
+    width: 100%;
+    border-color: #d1d5db !important;
+    color: #374151 !important;
+    font-size: 13px !important;
+    margin-bottom: 8px;
+}
+
+/* File type hint */
+.upload-hint {
+    font-size: 11px;
+    color: #9ca3af;
+    text-align: center;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* ── RIGHT COLUMN ─────────────────────────────────── */
+.right-col {
+    flex: 1;           /* Takes all remaining space */
+    min-width: 0;      /* Prevents overflow in flex containers */
+}
+
+/* Section titles */
+.section-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 16px;
+}
+
+/* Two-column form row */
+.form-row {
+    display: flex;
+    gap: 16px;
+}
+
+/* Individual form group */
+.form-group {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 4px;
+}
+
+/* Label above each field */
+.form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 4px;
+}
+
+/* Full width fields */
+.full-width {
+    width: 100%;
+}
+
+/* Read-only fields — visual grey to show non-editable */
+.readonly-field {
+    color: #6b7280 !important;
+    cursor: default !important;
+}
+
+/* Style the mat-form-field when it contains a readonly input */
+::ng-deep .full-width.mat-mdc-form-field:has(.readonly-field) 
+  .mdc-notched-outline__leading,
+::ng-deep .full-width.mat-mdc-form-field:has(.readonly-field) 
+  .mdc-notched-outline__notch,
+::ng-deep .full-width.mat-mdc-form-field:has(.readonly-field) 
+  .mdc-notched-outline__trailing {
+    border-color: #e5e7eb !important;
+}
+
+/* Actions row at bottom — right-aligned */
+.actions-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #f3f4f6;
+}
+
+/* Primary Update Profile button — blue like PDF */
+.update-btn {
+    background: #2563eb !important;
+    color: white !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    height: 40px;
+    padding: 0 24px !important;
+    display: flex !important;
+    align-items: center;
+}
+
+.update-btn:disabled {
+    background: #93c5fd !important;
+}
+
+/* Secondary Change Password button */
+.password-btn {
+    border-color: #2563eb !important;
+    color: #2563eb !important;
+    font-weight: 500 !important;
+    height: 40px;
+    padding: 0 20px !important;
+    display: flex !important;
+    align-items: center;
+}

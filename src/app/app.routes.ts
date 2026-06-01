@@ -5,6 +5,7 @@ import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { LayoutComponent } from './component/layout/layout.component';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
+import { ProfileComponent } from './component/profile/profile.component';
 
 export const routes: Routes = [
 
@@ -40,6 +41,10 @@ export const routes: Routes = [
                 component: DashboardComponent,
                 canActivate: [roleGuard],
                 data: { role: 'Admin' }
+            },
+            {
+                path: 'profile',
+                component: ProfileComponent
             }
         ]
     },
