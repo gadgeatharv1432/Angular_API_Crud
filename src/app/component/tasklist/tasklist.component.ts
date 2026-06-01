@@ -29,8 +29,7 @@ import { TaskDialogComponent } from '../../task-dialog/task-dialog/task-dialog.c
         MatChipsModule,
         MatTooltipModule,
         MatProgressSpinnerModule,
-        MatTabsModule,     // ← ADD THIS
-        MatProgressSpinnerModule
+        MatTabsModule
     ],
     templateUrl: './tasklist.component.html',
     styleUrl: './tasklist.component.css'

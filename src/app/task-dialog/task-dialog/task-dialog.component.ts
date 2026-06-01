@@ -9,7 +9,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Task } from '../../interfaces/task';
-import { CommonModule as NgCommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-task-dialog',
@@ -32,7 +31,7 @@ export class TaskDialogComponent implements OnInit {
     taskObj: Task = {
         taskName: '',
         taskDescription: '',
-        taskPriority: 'High',       // Default: High (matches PDF dropdown default)
+        taskPriority: 'High',
         taskStatus: 'Todo',
         assignee: '',
         dueDate: '',
