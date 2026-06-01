@@ -1,74 +1,90 @@
 <div class="login-container">
+  <mat-card class="login-card" appearance="outlined">
 
-  <mat-card class="login-card">
+    <!-- Logo Box — blue rounded square like PDF -->
+    <div class="logo-box">
+      <span>TF</span>
+    </div>
 
-    <div class="logo">TF</div>
+    <!-- Title & Subtitle -->
+    <h1 class="login-title">TaskFlow Pro</h1>
+    <p class="login-subtitle">Sign in to access your workspace</p>
 
-    <h1 class="title">TaskFlow Pro</h1>
-
-    <p class="subtitle">Sign in to access your workspace</p>
-
-    <form #loginForm="ngForm">
+    <!-- Form -->
+    <form #loginForm="ngForm" (ngSubmit)="login()" autocomplete="off">
 
       <!-- Email Field -->
+      <div class="field-label">Email Address</div>
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Email Address</mat-label>
-        <mat-icon matPrefix>mail</mat-icon>
-        <input matInput type="email" name="email"
-          required email #email="ngModel"
+        <mat-icon matPrefix class="field-icon">mail_outline</mat-icon>
+        <input
+          matInput
+          type="email"
+          name="email"
+          placeholder="admin@company.com"
+          required
+          email
+          #emailRef="ngModel"
           [(ngModel)]="loginObj.Email">
-        <mat-error *ngIf="email.invalid && email.touched">
-          Valid email is required.
+        <!-- Error shown only after user touches the field -->
+        <mat-error *ngIf="emailRef.invalid && emailRef.touched">
+          Valid email format is required.
         </mat-error>
       </mat-form-field>
 
-      <!-- Password Field -->
+      <!-- Password Field — label row has "Forgot password?" on right -->
+      <div class="field-label-row">
+        <span class="field-label">Password</span>
+        <a href="#" class="forgot-link">Forgot password?</a>
+      </div>
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Password</mat-label>
-        <mat-icon matPrefix>lock</mat-icon>
-        <input matInput
+        <mat-icon matPrefix class="field-icon">lock_outline</mat-icon>
+        <input
+          matInput
           [type]="hidePassword ? 'password' : 'text'"
-          name="password" required minlength="6"
-          #password="ngModel"
+          name="password"
+          required
+          minlength="6"
+          #passwordRef="ngModel"
           [(ngModel)]="loginObj.Password">
-        <button mat-icon-button matSuffix type="button"
+        <!-- Toggle password visibility -->
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
           (click)="hidePassword = !hidePassword">
-          <mat-icon>
-            {{ hidePassword ? 'visibility_off' : 'visibility' }}
-          </mat-icon>
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
-        <mat-error *ngIf="password.invalid && password.touched">
+        <mat-error *ngIf="passwordRef.invalid && passwordRef.touched">
           Password must be at least 6 characters.
         </mat-error>
       </mat-form-field>
 
-      <div class="forgot-password">
-        <a href="#">Forgot password?</a>
-      </div>
+      <!-- Sign In Button — full width, blue, with arrow like PDF -->
+      <button
+        mat-raised-button
+        class="signin-btn"
+        type="submit"
+        [disabled]="loginForm.invalid || isLoading">
 
-      <!-- Sign In Button -->
-      <button mat-raised-button color="primary" class="login-btn"
-        [disabled]="loginForm.invalid || isLoading"
-        (click)="login()">
-
-        <!-- Spinner shown while loading -->
+        <!-- Spinner while loading -->
         <mat-spinner
           *ngIf="isLoading"
-          diameter="20"
-          style="display:inline-block; vertical-align:middle; margin-right:8px;">
+          diameter="18"
+          class="btn-spinner">
         </mat-spinner>
 
-        {{ isLoading ? 'Signing in...' : 'Sign In' }}
-
+        <span *ngIf="!isLoading">Sign In &nbsp;→</span>
+        <span *ngIf="isLoading">Signing in...</span>
       </button>
 
     </form>
 
+    <!-- Bottom Text -->
     <p class="bottom-text">
       Don't have an account?
-      <span>Contact Administrator</span>
+      <a href="#" class="contact-link">Contact Administrator</a>
     </p>
 
   </mat-card>
-
 </div>

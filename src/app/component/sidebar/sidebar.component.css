@@ -1,75 +1,86 @@
 .sidebar {
-    width: 240px;
+    width: 220px;
+    min-width: 220px;       /* Never shrink below this */
     background: #1e2139;
     height: 100%;
-    padding-top: 8px;
     display: flex;
     flex-direction: column;
-    flex-shrink: 0;
+    overflow: hidden;
 }
 
+/* Brand section at top */
 .sidebar-brand {
-    padding: 16px 20px 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 16px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.brand-logo {
-    width: 36px;
-    height: 36px;
-    background: #3b82f6;
+.brand-icon {
+    width: 34px;
+    height: 34px;
+    background: #2563eb;
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    font-size: 14px;
-    color: white;
-    margin-bottom: 8px;
+    flex-shrink: 0;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
 }
 
 .brand-name {
     color: white;
     font-size: 15px;
-    font-weight: 600;
-    margin: 0;
+    font-weight: 700;
+    letter-spacing: 0.3px;
 }
 
-.brand-sub {
-    color: rgba(255,255,255,0.4);
-    font-size: 11px;
-    margin: 2px 0 0;
+/* Navigation list */
+.nav-list {
+    padding: 10px 0 !important;
+    flex: 1;
 }
 
-mat-nav-list a {
-    color: rgba(255,255,255,0.65) !important;
+/* Individual nav items */
+.nav-item {
+    color: rgba(255, 255, 255, 0.65) !important;
     border-radius: 8px !important;
-    margin: 2px 12px !important;
+    margin: 2px 10px !important;
     height: 44px !important;
     font-size: 14px !important;
-    transition: all 0.2s ease;
+    transition: all 0.15s ease !important;
 }
 
-mat-nav-list a:hover {
-    background: rgba(255,255,255,0.08) !important;
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.07) !important;
     color: white !important;
 }
 
+/* Icons in nav items */
+.nav-item mat-icon {
+    color: rgba(255, 255, 255, 0.50) !important;
+    font-size: 19px !important;
+    width: 19px !important;
+    height: 19px !important;
+}
+
+/* Active nav item — blue highlight matching PDF */
 .active-link {
-    background: #3b82f6 !important;
+    background: #2563eb !important;
     color: white !important;
-}
-
-.active-link mat-icon {
-    color: white !important;
-}
-
-mat-nav-list mat-icon {
-    color: rgba(255,255,255,0.5) !important;
-    font-size: 20px !important;
 }
 
 .active-link mat-icon {
     color: white !important;
     opacity: 1 !important;
+}
+
+/* Hover on active item */
+.active-link:hover {
+    background: #1d4ed8 !important;
 }

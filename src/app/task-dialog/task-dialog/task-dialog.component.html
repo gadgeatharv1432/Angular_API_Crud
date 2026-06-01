@@ -1,79 +1,128 @@
-<!-- src/app/component/task-dialog/task-dialog.component.html -->
-<div class="dialog-header">
-  <h2 mat-dialog-title>{{ dialogTitle }}</h2>
-  <button mat-icon-button (click)="cancel()">
-    <mat-icon>close</mat-icon>
-  </button>
+<div class="dialog-wrapper">
+
+  <!-- Dialog Header — Title + Subtitle (NO close button, matches PDF) -->
+  <div class="dialog-header">
+    <h2 class="dialog-title">{{ dialogTitle }}</h2>
+    <p class="dialog-subtitle">
+      Fill in the details below to assign a new task within the workspace.
+    </p>
+  </div>
+
+  <!-- Dialog Content — the form -->
+  <mat-dialog-content class="dialog-content">
+
+    <!-- Task Title — full width -->
+    <div class="form-group">
+      <label class="form-label">Task Title</label>
+      <mat-form-field appearance="outline" class="full-width">
+        <input
+          matInput
+          [(ngModel)]="taskObj.taskName"
+          name="taskName"
+          placeholder="e.g., Q3 Infrastructure Audit"
+          required>
+      </mat-form-field>
+    </div>
+
+    <!-- Description — full width, taller textarea -->
+    <div class="form-group">
+      <label class="form-label">Description</label>
+      <mat-form-field appearance="outline" class="full-width">
+        <textarea
+          matInput
+          [(ngModel)]="taskObj.taskDescription"
+          name="taskDescription"
+          rows="4"
+          placeholder="Provide detailed context, acceptance criteria, and expected outcomes...">
+        </textarea>
+      </mat-form-field>
+    </div>
+
+    <!-- Priority + Status — side by side -->
+    <div class="form-row">
+
+      <div class="form-group half">
+        <label class="form-label">Priority</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-select
+            [(ngModel)]="taskObj.taskPriority"
+            name="taskPriority">
+            <mat-option *ngFor="let p of priorityOptions" [value]="p">
+              {{ p }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group half">
+        <label class="form-label">Status</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-select
+            [(ngModel)]="taskObj.taskStatus"
+            name="taskStatus">
+            <mat-option *ngFor="let s of statusOptions" [value]="s">
+              {{ s }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <!-- Assign User + Due Date — side by side -->
+    <div class="form-row">
+
+      <div class="form-group half">
+        <label class="form-label">Assign User</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <!--
+            WHY: PDF shows "Assign User" as a dropdown with user names.
+            Since we don't have a users API endpoint yet, we use a text input.
+            This will be upgraded to a mat-select dropdown when we add user management.
+          -->
+          <mat-icon matPrefix style="color:#9ca3af; font-size:18px;">person_outline</mat-icon>
+          <input
+            matInput
+            [(ngModel)]="taskObj.assignee"
+            name="assignee"
+            placeholder="Enter assignee name"
+            required>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group half">
+        <label class="form-label">Due Date</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <input
+            matInput
+            [(ngModel)]="taskObj.dueDate"
+            name="dueDate"
+            type="date">
+        </mat-form-field>
+      </div>
+
+    </div>
+
+  </mat-dialog-content>
+
+  <!-- Dialog Actions — Cancel + Save Task -->
+  <mat-dialog-actions class="dialog-actions">
+    <button
+      mat-stroked-button
+      class="cancel-btn"
+      type="button"
+      (click)="cancel()">
+      Cancel
+    </button>
+    <button
+      mat-raised-button
+      class="save-btn"
+      type="button"
+      [disabled]="!taskObj.taskName || !taskObj.assignee"
+      (click)="save()">
+      <mat-icon style="font-size:16px; width:16px; height:16px;">save</mat-icon>
+      {{ isEditMode ? 'Update Task' : 'Save Task' }}
+    </button>
+  </mat-dialog-actions>
+
 </div>
-
-<mat-dialog-content class="dialog-content">
-
-  <!-- Task Name -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Task Name</mat-label>
-    <input matInput [(ngModel)]="taskObj.taskName"
-      name="taskName" required
-      placeholder="Enter task name">
-  </mat-form-field>
-
-  <!-- Description -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Description</mat-label>
-    <textarea matInput [(ngModel)]="taskObj.taskDescription"
-      name="taskDescription" rows="3"
-      placeholder="Enter task description"></textarea>
-  </mat-form-field>
-
-  <div class="row-2">
-
-    <!-- Priority -->
-    <mat-form-field appearance="outline" class="half-width">
-      <mat-label>Priority</mat-label>
-      <mat-select [(ngModel)]="taskObj.taskPriority" name="taskPriority">
-        <mat-option *ngFor="let p of priorityOptions" [value]="p">
-          {{ p }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <!-- Status -->
-    <mat-form-field appearance="outline" class="half-width">
-      <mat-label>Status</mat-label>
-      <mat-select [(ngModel)]="taskObj.taskStatus" name="taskStatus">
-        <mat-option *ngFor="let s of statusOptions" [value]="s">
-          {{ s }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-  </div>
-
-  <div class="row-2">
-
-    <!-- Assignee -->
-    <mat-form-field appearance="outline" class="half-width">
-      <mat-label>Assignee</mat-label>
-      <input matInput [(ngModel)]="taskObj.assignee"
-        name="assignee" required
-        placeholder="Assign to">
-    </mat-form-field>
-
-    <!-- Due Date -->
-    <mat-form-field appearance="outline" class="half-width">
-      <mat-label>Due Date</mat-label>
-      <input matInput [(ngModel)]="taskObj.dueDate"
-        name="dueDate" type="date">
-    </mat-form-field>
-
-  </div>
-
-</mat-dialog-content>
-
-<mat-dialog-actions class="dialog-actions">
-  <button mat-stroked-button (click)="cancel()">Cancel</button>
-  <button mat-raised-button color="primary"
-    [disabled]="!taskObj.taskName || !taskObj.assignee"
-    (click)="save()">
-    {{ isEditMode ? 'Update Task' : 'Save Task' }}
-  </button>
-</mat-dialog-actions>

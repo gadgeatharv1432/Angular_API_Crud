@@ -1,4 +1,4 @@
-// src/app/component/task-dialog/task-dialog.component.ts
+// src/app/task-dialog/task-dialog/task-dialog.component.ts
 import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -7,10 +7,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Task } from '../../interfaces/task';
+import { CommonModule as NgCommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-task-dialog',
@@ -23,8 +22,6 @@ import { Task } from '../../interfaces/task';
         MatInputModule,
         MatSelectModule,
         MatButtonModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
         MatIconModule
     ],
     templateUrl: './task-dialog.component.html',
@@ -32,11 +29,10 @@ import { Task } from '../../interfaces/task';
 })
 export class TaskDialogComponent implements OnInit {
 
-    // The task object we will bind the form to
     taskObj: Task = {
         taskName: '',
         taskDescription: '',
-        taskPriority: 'Medium',
+        taskPriority: 'High',       // Default: High (matches PDF dropdown default)
         taskStatus: 'Todo',
         assignee: '',
         dueDate: '',
@@ -44,10 +40,13 @@ export class TaskDialogComponent implements OnInit {
     };
 
     isEditMode: boolean = false;
+
+    // ← CHANGED: "Create New Task" matches PDF exactly
     dialogTitle: string = 'Create New Task';
 
-    priorityOptions = ['Low', 'Medium', 'High'];
-    statusOptions = ['Todo', 'InProgress', 'Done'];
+    // ← ADDED: Critical option to match PDF's "Critical" chip
+    priorityOptions = ['Low', 'Medium', 'High', 'Critical'];
+    statusOptions   = ['Todo', 'InProgress', 'Done'];
 
     constructor(
         public dialogRef: MatDialogRef<TaskDialogComponent>,
@@ -55,17 +54,15 @@ export class TaskDialogComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        // If a task was passed in → Edit mode
-        if (this.data && this.data.task) {
+        if (this.data?.task) {
             this.isEditMode = true;
+            // ← CHANGED: "Edit Task" for edit mode
             this.dialogTitle = 'Edit Task';
-            // Copy the task data into our form object
             this.taskObj = { ...this.data.task };
         }
     }
 
     save(): void {
-        // Send form data back to the caller
         this.dialogRef.close(this.taskObj);
     }
 

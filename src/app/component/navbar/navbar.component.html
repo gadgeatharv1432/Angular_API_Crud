@@ -1,39 +1,48 @@
 <mat-toolbar class="navbar">
 
-  <!-- Search Box - matches PDF design -->
+  <!-- Search Box — visual element matching PDF -->
   <div style="
-    display: flex; 
-    align-items: center; 
-    background: #f3f4f6; 
-    border-radius: 8px; 
-    padding: 6px 14px; 
+    display: flex;
+    align-items: center;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 7px 14px;
     gap: 8px;
-    min-width: 300px;
+    min-width: 280px;
+    cursor: text;
   ">
-    <mat-icon style="color: #9ca3af; font-size: 18px; width:18px; height:18px;">search</mat-icon>
-    <span style="color: #9ca3af; font-size: 14px;">Search tasks, reports, users...</span>
+    <mat-icon style="color:#9ca3af; font-size:17px; width:17px; height:17px; line-height:17px;">
+      search
+    </mat-icon>
+    <span style="color:#9ca3af; font-size:13px; user-select:none;">
+      Search tasks, reports, users...
+    </span>
   </div>
 
-  <!-- Spacer -->
+  <!-- Spacer — pushes right items to the edge -->
   <span class="spacer"></span>
 
-  <!-- Right Section: Bell + User -->
+  <!-- Right side controls -->
   <div class="navbar-right">
 
     <!-- Notification Bell -->
-    <button mat-icon-button>
-      <mat-icon style="color: #6b7280;">notifications_none</mat-icon>
+    <button mat-icon-button style="color: #6b7280;">
+      <mat-icon>notifications_none</mat-icon>
     </button>
 
-    <!-- User Info + Menu -->
+    <!-- User info + dropdown menu -->
     <div class="user-info" [matMenuTriggerFor]="userMenu">
       <mat-icon>account_circle</mat-icon>
       <span class="user-name">{{ userName }}</span>
       <span class="user-role-badge">{{ userRole }}</span>
-      <mat-icon style="color: #9ca3af; font-size: 16px;">arrow_drop_down</mat-icon>
+      <mat-icon style="color:#9ca3af; font-size:18px; width:18px; height:18px;">
+        expand_more
+      </mat-icon>
     </div>
 
-    <mat-menu #userMenu="matMenu">
+    <!-- Dropdown menu -->
+    <mat-menu #userMenu="matMenu" xPosition="before">
       <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>
         <span>Logout</span>

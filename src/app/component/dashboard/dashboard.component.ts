@@ -71,4 +71,15 @@ export class DashboardComponent implements OnInit {
             error: () => { this.isLoading = false; }
         });
     }
+    getDonutDash(percent: number): string {
+        const circumference = 2 * Math.PI * 35; // = ~219.9 for r=35
+        const filled = (percent / 100) * circumference;
+        const empty = circumference - filled;
+        return `${filled.toFixed(2)} ${empty.toFixed(2)}`;
+    }
+    getDonutOffset(startPercent: number): string {
+        const circumference = 2 * Math.PI * 35;
+        const offset = -((startPercent / 100) * circumference);
+        return offset.toFixed(2);
+    }
 }

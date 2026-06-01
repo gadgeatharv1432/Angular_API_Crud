@@ -1,39 +1,103 @@
-/* src/app/component/task-dialog/task-dialog.component.css */
+/* Outer wrapper — controls overall dialog width */
+.dialog-wrapper {
+    min-width: 560px;
+    max-width: 640px;
+}
+
+/* Header section */
 .dialog-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 24px 0;
+    padding: 28px 28px 0;
+    border-bottom: 1px solid #f3f4f6;
+    padding-bottom: 16px;
+    margin-bottom: 4px;
 }
 
-.dialog-header h2 {
+.dialog-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 6px;
+}
+
+.dialog-subtitle {
+    font-size: 13px;
+    color: #6b7280;
     margin: 0;
-    font-size: 20px;
-    font-weight: 600;
 }
 
+/* Content area */
 .dialog-content {
-    padding: 16px 24px;
-    min-width: 500px;
+    padding: 16px 28px !important;
+    overflow-y: auto;
+    max-height: 65vh;
 }
 
+/* Each form group: label + field */
+.form-group {
+    margin-bottom: 4px;
+}
+
+/* Custom label above each field — matches PDF style */
+.form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 4px;
+}
+
+/* Full width fields */
 .full-width {
     width: 100%;
-    margin-bottom: 8px;
 }
 
-.row-2 {
+/* Two-column row */
+.form-row {
     display: flex;
     gap: 16px;
 }
 
-.half-width {
+.form-row .half {
     flex: 1;
+    min-width: 0; /* Prevents flex item from overflowing */
 }
 
+/* Remove extra bottom spacing that Material adds */
+::ng-deep .dialog-content .mat-mdc-form-field-subscript-wrapper {
+    height: 16px;
+}
+
+/* Actions bar at bottom */
 .dialog-actions {
-    padding: 8px 24px 20px;
-    display: flex;
-    justify-content: flex-end;
+    padding: 12px 28px 24px !important;
+    display: flex !important;
+    justify-content: flex-end !important;
     gap: 12px;
+    border-top: 1px solid #f3f4f6;
+}
+
+/* Cancel button */
+.cancel-btn {
+    color: #374151 !important;
+    border-color: #d1d5db !important;
+    font-weight: 500 !important;
+    height: 40px;
+    padding: 0 20px !important;
+}
+
+/* Save Task button — blue, matches PDF */
+.save-btn {
+    background: #2563eb !important;
+    color: white !important;
+    font-weight: 600 !important;
+    height: 40px;
+    padding: 0 20px !important;
+    border-radius: 8px !important;
+    display: flex !important;
+    align-items: center;
+    gap: 6px;
+}
+
+.save-btn:disabled {
+    background: #93c5fd !important;
 }

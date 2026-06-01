@@ -1,20 +1,24 @@
-/* src/app/component/layout/layout.component.css */
+/* Outer shell — full viewport height, column flex */
 .app-shell {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    overflow: hidden;
+    overflow: hidden; 
+    background: #f3f4f6;
 }
 
+/* Middle section — sidebar + content side by side */
 .shell-body {
     display: flex;
     flex: 1;
-    overflow: hidden;
+    overflow: hidden; 
+    min-height: 0;
 }
 
+/* Main content area — scrollable, grey background */
 .main-content {
-    flex: 1;
-    overflow-y: auto;
+    flex: 1; 
+    overflow-y: auto; 
     background: #f3f4f6;
-    padding: 24px;
+    padding: 28px 32px;
 }

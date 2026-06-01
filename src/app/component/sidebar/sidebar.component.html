@@ -1,31 +1,40 @@
 <nav class="sidebar">
 
-  <!-- Brand Section - like PDF shows "Enterprise" at top -->
+  <!-- Brand Area — top of sidebar, matches PDF "Enterprise" header -->
   <div class="sidebar-brand">
-    <div class="brand-logo">E</div>
-    <p class="brand-name">Enterprise</p>
-    <p class="brand-sub">Task Management</p>
+    <div class="brand-icon">
+      <mat-icon style="font-size:20px; color:white;">grid_view</mat-icon>
+    </div>
+    <div class="brand-text">
+      <div class="brand-name">Enterprise</div>
+    </div>
   </div>
 
-  <mat-nav-list>
+  <!-- Navigation Items -->
+<mat-nav-list class="nav-list">
 
-    <!-- Dashboard — only for Admin role -->
-    <a mat-list-item
-      *ngIf="userRole === 'Admin'"
-      routerLink="/dashboard"
-      routerLinkActive="active-link">
-      <mat-icon matListItemIcon>dashboard</mat-icon>
-      <span matListItemTitle>Dashboard</span>
-    </a>
+  <!-- Dashboard -->
+  <a
+    mat-list-item
+    *ngIf="userRole === 'Admin'"
+    routerLink="/dashboard"
+    routerLinkActive="active-link">
 
-    <!-- Tasks — visible to everyone -->
-    <a mat-list-item
-      routerLink="/task"
-      routerLinkActive="active-link">
-      <mat-icon matListItemIcon>check_box</mat-icon>
-      <span matListItemTitle>Tasks</span>
-    </a>
+    <mat-icon matListItemIcon>dashboard</mat-icon>
+    <span matListItemTitle>Dashboard</span>
 
-  </mat-nav-list>
+  </a>
 
+  <!-- Tasks -->
+  <a
+    mat-list-item
+    routerLink="/task"
+    routerLinkActive="active-link">
+
+    <mat-icon matListItemIcon>check_box_outline_blank</mat-icon>
+    <span matListItemTitle>Tasks</span>
+
+  </a>
+
+</mat-nav-list>
 </nav>

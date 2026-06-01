@@ -1,45 +1,38 @@
+/* The Material toolbar base */
 .navbar {
     background: white !important;
     color: #111827 !important;
-    border-bottom: 1px solid #e5e7eb;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    box-shadow: none !important;
     height: 60px !important;
+    min-height: 60px !important;
     padding: 0 24px !important;
     position: sticky;
     top: 0;
     z-index: 100;
 }
 
-.navbar-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-/* Hide the brand in navbar since sidebar already shows it */
-.navbar-brand {
-    display: none;  
-}
-
-/* Spacer pushes right-side items to the far right */
+/* Spacer pushes right items to far right */
 .spacer {
     flex: 1 1 auto;
 }
 
+/* Right side of navbar */
 .navbar-right {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
 }
 
+/* User info block */
 .user-info {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 12px;
+    padding: 6px 10px;
     border-radius: 8px;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.15s;
 }
 
 .user-info:hover {
@@ -48,9 +41,9 @@
 
 .user-info mat-icon {
     color: #6b7280;
-    font-size: 28px;
-    width: 28px;
-    height: 28px;
+    font-size: 26px;
+    width: 26px;
+    height: 26px;
 }
 
 .user-name {
@@ -59,11 +52,12 @@
     font-size: 14px;
 }
 
+/* Role badge — blue pill */
 .user-role-badge {
     background: #dbeafe;
     color: #1d4ed8;
     padding: 2px 8px;
-    border-radius: 12px;
+    border-radius: 20px;
     font-size: 11px;
     font-weight: 600;
 }
