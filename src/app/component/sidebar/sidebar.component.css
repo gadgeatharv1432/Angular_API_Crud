@@ -1,28 +1,75 @@
 .sidebar {
-    width: 220px;
-    background: white;
-    border-right: 1px solid #e5e7eb;
+    width: 240px;
+    background: #1e2139;
     height: 100%;
-    padding-top: 16px;
+    padding-top: 8px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.sidebar-brand {
+    padding: 16px 20px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 8px;
+}
+
+.brand-logo {
+    width: 36px;
+    height: 36px;
+    background: #3b82f6;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.brand-name {
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.brand-sub {
+    color: rgba(255,255,255,0.4);
+    font-size: 11px;
+    margin: 2px 0 0;
 }
 
 mat-nav-list a {
-    color: #374151;
-    border-radius: 8px;
-    margin: 4px 8px;
+    color: rgba(255,255,255,0.65) !important;
+    border-radius: 8px !important;
+    margin: 2px 12px !important;
+    height: 44px !important;
+    font-size: 14px !important;
+    transition: all 0.2s ease;
 }
 
 mat-nav-list a:hover {
-    background: #eff6ff;
-    color: #1e40af;
+    background: rgba(255,255,255,0.08) !important;
+    color: white !important;
 }
 
 .active-link {
-    background: #eff6ff !important;
-    color: #1e40af !important;
-    font-weight: 600;
+    background: #3b82f6 !important;
+    color: white !important;
 }
 
 .active-link mat-icon {
-    color: #1e40af !important;
+    color: white !important;
+}
+
+mat-nav-list mat-icon {
+    color: rgba(255,255,255,0.5) !important;
+    font-size: 20px !important;
+}
+
+.active-link mat-icon {
+    color: white !important;
+    opacity: 1 !important;
 }

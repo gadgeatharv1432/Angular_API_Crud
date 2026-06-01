@@ -1,17 +1,19 @@
 /* src/app/component/tasklist/tasklist.component.css */
+
 .page-container {
     max-width: 1200px;
 }
 
+/* Header row */
 .page-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
 .page-title {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 700;
     color: #111827;
     margin: 0;
@@ -20,80 +22,158 @@
 .page-subtitle {
     color: #6b7280;
     margin: 4px 0 0;
+    font-size: 14px;
 }
 
-.search-bar {
+/* Add button - matches PDF blue button */
+.add-btn {
+    background: #2563eb !important;
+    color: white !important;
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+    height: 40px !important;
+}
+
+/* Tabs row — tabs on left, filter button on right */
+.tabs-row {
     display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 16px;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 0;
+    border-bottom: 1px solid #e5e7eb;
 }
 
-.search-field {
+/* Style the tab group to look like PDF */
+.task-tabs {
     flex: 1;
 }
 
-.task-count {
-    color: #6b7280;
-    font-size: 14px;
-    white-space: nowrap;
+/* Override Material tab styles */
+::ng-deep .task-tabs .mat-mdc-tab-header {
+    border-bottom: none !important;
 }
 
+::ng-deep .task-tabs .mat-mdc-tab {
+    min-width: 100px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b7280;
+}
+
+::ng-deep .task-tabs .mat-mdc-tab.mdc-tab--active {
+    color: #2563eb !important;
+    font-weight: 600;
+}
+
+::ng-deep .task-tabs .mdc-tab-indicator__content--underline {
+    border-color: #2563eb !important;
+}
+
+.filter-btn {
+    margin-bottom: 8px;
+    color: #374151 !important;
+    border-color: #e5e7eb !important;
+    font-size: 13px !important;
+    height: 36px !important;
+}
+
+/* Loading */
 .loading-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center;
     padding: 60px;
-    color: #6b7280;
 }
 
+/* Empty state */
 .empty-state {
     text-align: center;
     padding: 80px 20px;
     color: #9ca3af;
 }
-
 .empty-state mat-icon {
-    font-size: 64px;
-    width: 64px;
-    height: 64px;
+    font-size: 56px;
+    width: 56px;
+    height: 56px;
 }
 
+/* Table container — white card */
 .table-container {
     background: white;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    border: 1px solid #f3f4f6;
+    margin-top: 0;
 }
 
 .tasks-table {
     width: 100%;
 }
 
-/* Column header */
-.mat-mdc-header-cell {
-    background: #f9fafb;
-    color: #374151;
-    font-weight: 600;
-    font-size: 13px;
+/* Header cells */
+::ng-deep .tasks-table .mat-mdc-header-cell {
+    background: #f9fafb !important;
+    color: #6b7280 !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.6px;
+    border-bottom: 1px solid #e5e7eb !important;
+    padding: 12px 16px !important;
 }
 
+/* Data cells */
+::ng-deep .tasks-table .mat-mdc-cell {
+    padding: 14px 16px !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+}
+
+/* Circle checkbox — like PDF */
+.task-circle {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #d1d5db;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.task-circle:hover {
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+
+.task-circle.done {
+    background: #16a34a;
+    border-color: #16a34a;
+    color: white;
+}
+
+/* Task name */
 .task-name {
-    font-weight: 600;
+    font-weight: 500;
     color: #111827;
+    font-size: 14px;
 }
 
-.task-desc {
+/* Strikethrough for completed tasks */
+.task-name.strikethrough {
+    text-decoration: line-through;
+    color: #9ca3af;
+}
+
+/* Sub-text under task name */
+.task-dept {
     font-size: 12px;
-    color: #6b7280;
-    max-width: 250px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    color: #9ca3af;
+    margin-top: 2px;
 }
 
+/* Assignee with avatar */
 .assignee {
     display: flex;
     align-items: center;
@@ -101,8 +181,8 @@
 }
 
 .avatar {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     background: #dbeafe;
     color: #1e40af;
     border-radius: 50%;
@@ -110,25 +190,48 @@
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 11px;
+    flex-shrink: 0;
 }
 
-/* Priority and Status chips */
+/* Overdue date */
+.overdue {
+    color: #dc2626;
+    font-weight: 500;
+}
+
+/* Priority chips */
 .chip {
-    padding: 4px 12px;
+    padding: 3px 10px;
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
+    display: inline-block;
+}
+.chip-critical { background: #fce7f3; color: #9d174d; }
+.chip-high     { background: #fee2e2; color: #dc2626; }
+.chip-medium   { background: #fef3c7; color: #d97706; }
+.chip-low      { background: #dcfce7; color: #16a34a; }
+.chip-todo     { background: #f3f4f6; color: #374151; }
+.chip-progress { background: #dbeafe; color: #1d4ed8; }
+.chip-done     { background: #dcfce7; color: #15803d; }
+
+/* Row styles */
+.task-row {
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.task-row:hover {
+    background: #f9fafb !important;
 }
 
-.chip-high    { background: #fee2e2; color: #dc2626; }
-.chip-medium  { background: #fef3c7; color: #d97706; }
-.chip-low     { background: #dcfce7; color: #16a34a; }
-.chip-todo    { background: #f3f4f6; color: #374151; }
-.chip-progress{ background: #dbeafe; color: #1d4ed8; }
-.chip-done    { background: #dcfce7; color: #15803d; }
-
-/* Row hover */
-.mat-mdc-row:hover {
+/* Table footer */
+.table-footer {
+    padding: 12px 16px;
+    border-top: 1px solid #f3f4f6;
     background: #f9fafb;
+}
+.showing-text {
+    font-size: 13px;
+    color: #6b7280;
 }

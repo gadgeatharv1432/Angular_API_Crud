@@ -1,8 +1,15 @@
 <nav class="sidebar">
 
+  <!-- Brand Section - like PDF shows "Enterprise" at top -->
+  <div class="sidebar-brand">
+    <div class="brand-logo">E</div>
+    <p class="brand-name">Enterprise</p>
+    <p class="brand-sub">Task Management</p>
+  </div>
+
   <mat-nav-list>
 
-    <!-- Dashboard — only shown to Admin -->
+    <!-- Dashboard — only for Admin role -->
     <a mat-list-item
       *ngIf="userRole === 'Admin'"
       routerLink="/dashboard"
@@ -11,12 +18,12 @@
       <span matListItemTitle>Dashboard</span>
     </a>
 
-    <!-- Tasks — shown to everyone -->
+    <!-- Tasks — visible to everyone -->
     <a mat-list-item
       routerLink="/task"
       routerLinkActive="active-link">
-      <mat-icon matListItemIcon>task_alt</mat-icon>
-      <span matListItemTitle>My Tasks</span>
+      <mat-icon matListItemIcon>check_box</mat-icon>
+      <span matListItemTitle>Tasks</span>
     </a>
 
   </mat-nav-list>

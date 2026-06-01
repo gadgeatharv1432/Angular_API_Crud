@@ -8,15 +8,13 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTabsModule } from '@angular/material/tabs';   // ← NEW: for tab filtering
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 
 import { Task } from '../../interfaces/task';
 import { TaskserviceService } from '../../service/taskservice.service';
 import { TaskDialogComponent } from '../../task-dialog/task-dialog/task-dialog.component';
-
 
 @Component({
     selector: 'app-tasklist',
@@ -31,27 +29,23 @@ import { TaskDialogComponent } from '../../task-dialog/task-dialog/task-dialog.c
         MatChipsModule,
         MatTooltipModule,
         MatProgressSpinnerModule,
-        MatInputModule,
-        MatFormFieldModule
+        MatTabsModule,     // ← ADD THIS
+        MatProgressSpinnerModule
     ],
     templateUrl: './tasklist.component.html',
     styleUrl: './tasklist.component.css'
 })
 export class TasklistComponent implements OnInit {
 
-    // All tasks from the API
     allTasks: Task[] = [];
-
-    // Filtered list shown in the table
     filteredTasks: Task[] = [];
 
-    // Search text bound to the search box
-    searchText: string = '';
+    // ← NEW: tracks which tab is active (0=All, 1=Active, 2=Completed)
+    activeTabIndex: number = 0;
 
-    // Table column names
+    // UPDATED: removed 'taskStatus' — tabs replace that column
     displayedColumns: string[] = [
-        'taskName', 'taskPriority', 'taskStatus',
-        'assignee', 'dueDate', 'actions'
+        'check', 'taskName', 'taskPriority', 'assignee', 'dueDate', 'actions'
     ];
 
     isLoading: boolean = false;
@@ -65,106 +59,117 @@ export class TasklistComponent implements OnInit {
         this.loadTasks();
     }
 
-    // ── Load all tasks from backend ──────────────────────────
     loadTasks(): void {
         this.isLoading = true;
-
         this.taskService.getAllTasks().subscribe({
             next: (res) => {
                 this.isLoading = false;
                 this.allTasks = res.data;
-                this.filteredTasks = res.data;
+                this.applyTabFilter();  // Apply current tab filter after load
             },
-            error: (err) => {
+            error: () => {
                 this.isLoading = false;
-                console.error('Load tasks error:', err);   // ← prints full error in browser console
-                Swal.fire(
-                    'Error',
-                    err.error?.message || err.message || 'Could not load tasks.',
-                    'error'
-                );
+                Swal.fire('Error', 'Could not load tasks.', 'error');
             }
         });
     }
 
-    // ── Filter table as user types in search box ─────────────
-    applySearch(): void {
-        const term = this.searchText.toLowerCase().trim();
-        if (!term) {
-            this.filteredTasks = this.allTasks;
-            return;
-        }
-        this.filteredTasks = this.allTasks.filter(t =>
-            t.taskName.toLowerCase().includes(term) ||
-            t.assignee.toLowerCase().includes(term) ||
-            t.taskStatus.toLowerCase().includes(term) ||
-            t.taskPriority.toLowerCase().includes(term)
-        );
+    // ── Tab filtering logic ────────────────────────────────────
+    // WHY: PDF has 3 tabs. Each tab shows a filtered subset.
+    // Tab 0 = All Tasks (no filter)
+    // Tab 1 = Active (Todo + InProgress — not done)
+    // Tab 2 = Completed (Done only)
+    onTabChange(index: number): void {
+        this.activeTabIndex = index;
+        this.applyTabFilter();
     }
 
-    // ── Open dialog for Add Task ──────────────────────────────
+    applyTabFilter(): void {
+        switch (this.activeTabIndex) {
+            case 0:  // All Tasks
+                this.filteredTasks = [...this.allTasks];
+                break;
+            case 1:  // Active = not completed
+                this.filteredTasks = this.allTasks.filter(
+                    t => t.taskStatus !== 'Done'
+                );
+                break;
+            case 2:  // Completed
+                this.filteredTasks = this.allTasks.filter(
+                    t => t.taskStatus === 'Done'
+                );
+                break;
+            default:
+                this.filteredTasks = [...this.allTasks];
+        }
+    }
+
+    // ── Toggle task complete (circle checkbox click) ──────────
+    // WHY: PDF shows circle checkboxes. Clicking marks task done.
+    toggleComplete(task: Task): void {
+        if (!task.id) return;
+        const updated: Task = {
+            ...task,
+            taskStatus: task.taskStatus === 'Done' ? 'InProgress' : 'Done',
+            isCompleted: task.taskStatus !== 'Done'
+        };
+        this.taskService.updateTask(task.id, updated).subscribe({
+            next: () => this.loadTasks(),
+            error: () => Swal.fire('Error', 'Could not update task.', 'error')
+        });
+    }
+
+    // ── Add/Edit dialogs ──────────────────────────────────────
     openAddDialog(): void {
         const dialogRef = this.dialog.open(TaskDialogComponent, {
-            data: { task: null }  // null = add mode
+            data: { task: null },
+            width: '600px'
         });
-
         dialogRef.afterClosed().subscribe((result: Task | null) => {
             if (result) {
                 this.taskService.createTask(result).subscribe({
                     next: () => {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Task Added!',
+                            title: 'Task saved successfully.',
                             timer: 1500,
-                            showConfirmButton: false
+                            showConfirmButton: false,
+                            toast: true,
+                            position: 'bottom'
                         });
-                        this.loadTasks();  // Refresh the table
+                        this.loadTasks();
                     },
-                    error: (err) => {
-                        console.error('Create task error:', err);
-                        Swal.fire(
-                            'Error',
-                            err.error?.message || err.message || 'Could not create task.',
-                            'error'
-                        );
-                    }
+                    error: () => Swal.fire('Error', 'Could not create task.', 'error')
                 });
             }
         });
     }
 
-    // ── Open dialog for Edit Task ─────────────────────────────
     openEditDialog(task: Task): void {
         const dialogRef = this.dialog.open(TaskDialogComponent, {
-            data: { task: { ...task } }  // Pass a copy so cancel works
+            data: { task: { ...task } },
+            width: '600px'
         });
-
         dialogRef.afterClosed().subscribe((result: Task | null) => {
             if (result && result.id) {
                 this.taskService.updateTask(result.id, result).subscribe({
                     next: () => {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Task Updated!',
+                            title: 'Task updated successfully.',
                             timer: 1500,
-                            showConfirmButton: false
+                            showConfirmButton: false,
+                            toast: true,
+                            position: 'bottom'
                         });
                         this.loadTasks();
                     },
-                    error: (err) => {
-                        console.error('Update task error:', err);
-                        Swal.fire(
-                            'Error',
-                            err.error?.message || err.message || 'Could not update task.',
-                            'error'
-                        );
-                    }
+                    error: () => Swal.fire('Error', 'Could not update task.', 'error')
                 });
             }
         });
     }
 
-    // ── Delete task with confirmation ─────────────────────────
     deleteTask(task: Task): void {
         Swal.fire({
             title: 'Delete Task?',
@@ -192,17 +197,32 @@ export class TasklistComponent implements OnInit {
         });
     }
 
-    // ── Helper: returns CSS class for priority chip ───────────
+    // ── Helper methods ────────────────────────────────────────
+
+    // WHY: Gets initials for the avatar circle (e.g., "Sarah Johnson" → "SJ")
+    getInitials(name: string): string {
+        if (!name) return '?';
+        const parts = name.trim().split(' ');
+        if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+        return name.substring(0, 2).toUpperCase();
+    }
+
+    // WHY: Shows red date for overdue tasks
+    isOverdue(dueDate: string | undefined): boolean {
+        if (!dueDate) return false;
+        return new Date(dueDate) < new Date();
+    }
+
     getPriorityClass(priority: string): string {
         const map: Record<string, string> = {
             'High': 'chip-high',
             'Medium': 'chip-medium',
-            'Low': 'chip-low'
+            'Low': 'chip-low',
+            'Critical': 'chip-critical'
         };
         return map[priority] || '';
     }
 
-    // ── Helper: returns CSS class for status chip ─────────────
     getStatusClass(status: string): string {
         const map: Record<string, string> = {
             'Todo': 'chip-todo',

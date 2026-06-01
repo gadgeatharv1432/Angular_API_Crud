@@ -1,86 +1,167 @@
-<!-- src/app/component/dashboard/dashboard.component.html -->
 <div class="page-container">
 
+  <!-- Page Header -->
   <div class="page-header">
-    <h1 class="page-title">Dashboard</h1>
-    <p class="page-subtitle">Overview of all tasks across the team</p>
+    <div>
+      <h1 class="page-title">Dashboard Overview</h1>
+      <p class="page-subtitle">Track your key metrics and project health.</p>
+    </div>
+    <div class="header-actions">
+      <button mat-stroked-button class="week-btn">
+        <mat-icon>calendar_today</mat-icon>
+        This Week
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </button>
+      <button mat-raised-button color="primary" class="new-report-btn">
+        <mat-icon>add</mat-icon>
+        New Report
+      </button>
+    </div>
   </div>
 
+  <!-- Loading -->
   <div *ngIf="isLoading" class="loading">
     <mat-spinner diameter="50"></mat-spinner>
   </div>
 
   <ng-container *ngIf="!isLoading">
 
-    <!-- Stats Cards Row -->
-    <div class="stats-grid">
+    <!-- ── KPI Cards Row ─────────────────────────────────────── -->
+    <div class="kpi-grid">
 
-      <mat-card class="stat-card card-blue">
-        <mat-icon>assignment</mat-icon>
-        <div class="stat-value">{{ totalTasks }}</div>
-        <div class="stat-label">Total Tasks</div>
+      <!-- Total Tasks -->
+      <mat-card class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-icon icon-blue">
+            <mat-icon>assignment</mat-icon>
+          </div>
+          <span class="kpi-trend trend-up">↑ 12%</span>
+        </div>
+        <div class="kpi-label">Total Tasks</div>
+        <div class="kpi-value">{{ totalTasks }}</div>
       </mat-card>
 
-      <mat-card class="stat-card card-green">
-        <mat-icon>check_circle</mat-icon>
-        <div class="stat-value">{{ completedTasks }}</div>
-        <div class="stat-label">Completed</div>
+      <!-- Completed -->
+      <mat-card class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-icon icon-green">
+            <mat-icon>check_circle</mat-icon>
+          </div>
+          <span class="kpi-trend trend-up">↑ 8%</span>
+        </div>
+        <div class="kpi-label">Completed</div>
+        <div class="kpi-value kpi-green">{{ completedTasks }}</div>
       </mat-card>
 
-      <mat-card class="stat-card card-orange">
-        <mat-icon>pending</mat-icon>
-        <div class="stat-value">{{ pendingTasks }}</div>
-        <div class="stat-label">Pending</div>
+      <!-- Pending -->
+      <mat-card class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-icon icon-orange">
+            <mat-icon>pending</mat-icon>
+          </div>
+          <span class="kpi-trend trend-down">↓ 3%</span>
+        </div>
+        <div class="kpi-label">Pending</div>
+        <div class="kpi-value kpi-orange">{{ pendingTasks }}</div>
       </mat-card>
 
-      <mat-card class="stat-card card-red">
-        <mat-icon>priority_high</mat-icon>
-        <div class="stat-value">{{ highPriority }}</div>
-        <div class="stat-label">High Priority</div>
-      </mat-card>
-
-      <mat-card class="stat-card card-purple">
-        <mat-icon>autorenew</mat-icon>
-        <div class="stat-value">{{ inProgress }}</div>
-        <div class="stat-label">In Progress</div>
+      <!-- In Progress -->
+      <mat-card class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-icon icon-purple">
+            <mat-icon>autorenew</mat-icon>
+          </div>
+          <span class="kpi-trend trend-up">↑ 34%</span>
+        </div>
+        <div class="kpi-label">In Progress</div>
+        <div class="kpi-value kpi-purple">{{ inProgress }}</div>
       </mat-card>
 
     </div>
 
-    <!-- Recent Tasks -->
-    <mat-card class="recent-card">
+    <!-- ── Charts Row ─────────────────────────────────────────── -->
+    <div class="charts-row">
 
-      <mat-card-header>
-        <mat-card-title>Recent Tasks</mat-card-title>
-        <mat-card-subtitle>Latest 5 tasks in the system</mat-card-subtitle>
-      </mat-card-header>
-
-      <mat-card-content>
-        <div *ngFor="let task of recentTasks" class="task-row">
-
-          <div class="task-info">
-            <div class="task-name">{{ task.taskName }}</div>
-            <div class="task-meta">{{ task.assignee }} · Due {{ task.dueDate | date: 'dd MMM' }}</div>
+      <!-- Tasks by Status — Bar Chart Card -->
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>Tasks by Status</mat-card-title>
+          <mat-card-subtitle>Current sprint progress overview</mat-card-subtitle>
+          <button mat-icon-button class="card-menu">
+            <mat-icon>more_horiz</mat-icon>
+          </button>
+        </mat-card-header>
+        <mat-card-content class="chart-content">
+          <!-- CSS Bar Chart -->
+          <div class="bar-chart">
+            <div class="bar-group" *ngFor="let bar of statusBars">
+              <div class="bar-wrap">
+                <div class="bar" 
+                     [style.height.%]="bar.percent"
+                     [style.background]="bar.color">
+                </div>
+              </div>
+              <div class="bar-label">{{ bar.label }}</div>
+              <div class="bar-count">{{ bar.count }}</div>
+            </div>
           </div>
+        </mat-card-content>
+      </mat-card>
 
-          <div class="task-badges">
-            <span class="chip" [ngClass]="getPriorityClass(task.taskPriority)">
-              {{ task.taskPriority }}
-            </span>
-            <span class="chip" [ngClass]="getStatusClass(task.taskStatus)">
-              {{ task.taskStatus }}
-            </span>
+      <!-- Priority Breakdown — Donut Chart Card -->
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>Priority Breakdown</mat-card-title>
+          <mat-card-subtitle>Distribution of task urgency</mat-card-subtitle>
+          <button mat-icon-button class="card-menu">
+            <mat-icon>more_horiz</mat-icon>
+          </button>
+        </mat-card-header>
+        <mat-card-content class="chart-content donut-content">
+          <!-- CSS Donut Chart -->
+          <div class="donut-chart">
+            <div class="donut-visual">
+              <!-- Simple visual representation -->
+              <svg viewBox="0 0 100 100" class="donut-svg">
+                <circle cx="50" cy="50" r="35" fill="none" stroke="#fee2e2" stroke-width="20"/>
+                <circle cx="50" cy="50" r="35" fill="none" stroke="#fef3c7" stroke-width="20"
+                  stroke-dasharray="{{ mediumPercent * 2.2 }} {{ (100 - mediumPercent) * 2.2 }}"
+                  stroke-dashoffset="{{ -highPercent * 2.2 }}"
+                  transform="rotate(-90 50 50)"/>
+                <circle cx="50" cy="50" r="35" fill="none" stroke="#dcfce7" stroke-width="20"
+                  stroke-dasharray="{{ lowPercent * 2.2 }} {{ (100 - lowPercent) * 2.2 }}"
+                  stroke-dashoffset="{{ -(highPercent + mediumPercent) * 2.2 }}"
+                  transform="rotate(-90 50 50)"/>
+                <circle cx="50" cy="50" r="35" fill="none" stroke="#fee2e2" stroke-width="20"
+                  stroke-dasharray="{{ highPercent * 2.2 }} {{ (100 - highPercent) * 2.2 }}"
+                  stroke-dashoffset="0"
+                  transform="rotate(-90 50 50)"/>
+                <text x="50" y="46" text-anchor="middle" font-size="16" font-weight="bold" fill="#111827">{{ totalTasks }}</text>
+                <text x="50" y="58" text-anchor="middle" font-size="7" fill="#9ca3af">Total</text>
+              </svg>
+            </div>
+            <div class="donut-legend">
+              <div class="legend-item">
+                <span class="legend-dot" style="background:#ef4444"></span>
+                <span>High Priority</span>
+                <span class="legend-pct">{{ highPercent }}%</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot" style="background:#f59e0b"></span>
+                <span>Medium Priority</span>
+                <span class="legend-pct">{{ mediumPercent }}%</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot" style="background:#22c55e"></span>
+                <span>Low Priority</span>
+                <span class="legend-pct">{{ lowPercent }}%</span>
+              </div>
+            </div>
           </div>
+        </mat-card-content>
+      </mat-card>
 
-        </div>
-
-        <div *ngIf="recentTasks.length === 0" class="no-tasks">
-          No tasks yet.
-        </div>
-
-      </mat-card-content>
-
-    </mat-card>
+    </div>
 
   </ng-container>
 

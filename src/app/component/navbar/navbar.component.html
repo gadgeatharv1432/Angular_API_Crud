@@ -1,26 +1,37 @@
 <mat-toolbar class="navbar">
 
-  <!-- Left: Logo + App Name -->
-  <div class="navbar-brand">
-    <div class="logo-box">TF</div>
-    <span class="app-name">TaskFlow Pro</span>
+  <!-- Search Box - matches PDF design -->
+  <div style="
+    display: flex; 
+    align-items: center; 
+    background: #f3f4f6; 
+    border-radius: 8px; 
+    padding: 6px 14px; 
+    gap: 8px;
+    min-width: 300px;
+  ">
+    <mat-icon style="color: #9ca3af; font-size: 18px; width:18px; height:18px;">search</mat-icon>
+    <span style="color: #9ca3af; font-size: 14px;">Search tasks, reports, users...</span>
   </div>
 
-  <!-- Spacer pushes right items to the right -->
+  <!-- Spacer -->
   <span class="spacer"></span>
 
-  <!-- Right: User info + Logout -->
+  <!-- Right Section: Bell + User -->
   <div class="navbar-right">
 
-    <div class="user-info">
+    <!-- Notification Bell -->
+    <button mat-icon-button>
+      <mat-icon style="color: #6b7280;">notifications_none</mat-icon>
+    </button>
+
+    <!-- User Info + Menu -->
+    <div class="user-info" [matMenuTriggerFor]="userMenu">
       <mat-icon>account_circle</mat-icon>
       <span class="user-name">{{ userName }}</span>
       <span class="user-role-badge">{{ userRole }}</span>
+      <mat-icon style="color: #9ca3af; font-size: 16px;">arrow_drop_down</mat-icon>
     </div>
-
-    <button mat-icon-button [matMenuTriggerFor]="userMenu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
 
     <mat-menu #userMenu="matMenu">
       <button mat-menu-item (click)="logout()">

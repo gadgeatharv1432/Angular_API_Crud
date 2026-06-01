@@ -44,7 +44,7 @@ export class TaskDialogComponent implements OnInit {
     };
 
     isEditMode: boolean = false;
-    dialogTitle: string = 'Add New Task';
+    dialogTitle: string = 'Create New Task';
 
     priorityOptions = ['Low', 'Medium', 'High'];
     statusOptions = ['Todo', 'InProgress', 'Done'];
