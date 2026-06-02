@@ -18,21 +18,6 @@
 
 .page-subtitle { color: #6b7280; margin: 4px 0 0; font-size: 14px; }
 
-.header-actions { display: flex; gap: 12px; align-items: center; }
-
-.week-btn {
-    color: #374151 !important;
-    border-color: #e5e7eb !important;
-    gap: 4px;
-    font-size: 13px !important;
-}
-
-.new-report-btn {
-    background: #2563eb !important;
-    color: white !important;
-    border-radius: 8px !important;
-}
-
 .loading { display: flex; justify-content: center; padding: 80px; }
 
 /* ── KPI Cards ───────────────────────────────── */

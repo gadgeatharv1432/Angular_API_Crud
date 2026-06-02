@@ -1,54 +1,98 @@
+<!-- src/app/component/profile/profile.component.html -->
+
 <div class="page-container">
 
   <!-- Page Header -->
   <div class="page-header">
-    <div>
-      <h1 class="page-title">Profile Settings</h1>
-      <p class="page-subtitle">Manage your account details and security preferences.</p>
-    </div>
+    <h1 class="page-title">Profile Settings</h1>
+    <p class="page-subtitle">Manage your account details and security preferences.</p>
   </div>
 
-  <!-- Loading state while profile data is being fetched -->
+  <!-- Loading -->
   <div *ngIf="isLoadingProfile" class="loading-container">
     <mat-spinner diameter="40"></mat-spinner>
   </div>
 
-  <!-- Main Profile Card — shown after data loads -->
+  <!-- Profile Card -->
   <mat-card class="profile-card" *ngIf="!isLoadingProfile">
     <mat-card-content class="card-content">
 
-      <!-- ── LEFT COLUMN: Avatar + Upload ────────────────────── -->
+      <!-- ── LEFT COLUMN: Avatar + Upload ── -->
       <div class="left-col">
 
-        <!-- Avatar circle with user's initial -->
-        <div class="avatar-circle">
-          <span class="avatar-initial">{{ avatarInitial }}</span>
+        <!-- Avatar area — shows photo if uploaded, else initial letter -->
+        <div class="avatar-wrap">
+
+          <!-- CASE 1: User has uploaded a photo — show it -->
+          <img
+            *ngIf="currentPhoto"
+            [src]="currentPhoto"
+            alt="Profile Photo"
+            class="avatar-img">
+
+          <!-- CASE 2: No photo — show initial letter circle -->
+          <div *ngIf="!currentPhoto" class="avatar-circle">
+            <span class="avatar-initial">{{ avatarInitial }}</span>
+          </div>
+
+          <!-- Camera overlay icon — appears on hover -->
+          <!-- TEACHING: This is a CSS hover overlay pattern.
+               The camera icon sits on top of the avatar and is normally
+               invisible (opacity: 0). On hover of the parent, it becomes
+               visible (opacity: 1). The transition makes it smooth.
+               This tells the user "you can change this" without cluttering UI. -->
+          <div class="avatar-overlay" (click)="triggerFileInput()">
+            <mat-icon>photo_camera</mat-icon>
+          </div>
+
         </div>
 
-        <!-- Upload Photo button — visual, no backend yet -->
-        <button mat-stroked-button class="upload-btn" type="button">
-          Upload Photo
+        <!-- HIDDEN file input — triggered by button click -->
+        <!-- TEACHING: accept="image/*" restricts OS file picker to images only.
+             But we ALSO validate in TypeScript because accept can be bypassed.
+             Always validate on both sides — this is defense in depth. -->
+        <input
+          #fileInput
+          type="file"
+          accept="image/jpeg,image/png,image/gif"
+          style="display: none;"
+          (change)="onFileSelected($event)">
+
+        <!-- Upload / Change Photo button -->
+        <button
+          mat-stroked-button
+          class="upload-btn"
+          type="button"
+          (click)="triggerFileInput()">
+          <mat-icon style="font-size:16px; margin-right:4px;">upload</mat-icon>
+          {{ currentPhoto ? 'Change Photo' : 'Upload Photo' }}
         </button>
 
-        <!-- File hint text -->
+        <!-- Remove photo link — only shown when photo exists -->
+        <button
+          *ngIf="currentPhoto"
+          mat-button
+          class="remove-btn"
+          type="button"
+          (click)="removePhoto()">
+          Remove
+        </button>
+
         <p class="upload-hint">JPG, GIF or PNG. Max size of 800K</p>
 
       </div>
 
-      <!-- ── RIGHT COLUMN: Forms ─────────────────────────────── -->
+      <!-- ── RIGHT COLUMN: Forms ── -->
       <div class="right-col">
 
-        <!-- ══ SECTION 1: Personal Information ═══════════════ -->
+        <!-- Section 1: Personal Information -->
         <h3 class="section-title">Personal Information</h3>
 
-        <!-- Full Name + Email Address — side by side -->
         <div class="form-row">
-
           <div class="form-group">
             <label class="form-label">Full Name</label>
             <mat-form-field appearance="outline" class="full-width">
-              <input
-                matInput
+              <input matInput
                 [(ngModel)]="updateForm.userName"
                 name="userName"
                 placeholder="Enter your full name">
@@ -58,39 +102,31 @@
           <div class="form-group">
             <label class="form-label">Email Address</label>
             <mat-form-field appearance="outline" class="full-width">
-              <input
-                matInput
+              <input matInput
                 [value]="profile.email"
-                name="email"
                 readonly
                 class="readonly-field">
             </mat-form-field>
           </div>
-
         </div>
 
-        <!-- Role — full width, read-only -->
         <div class="form-group">
           <label class="form-label">Role</label>
           <mat-form-field appearance="outline" class="full-width">
-            <input
-              matInput
+            <input matInput
               [value]="profile.role"
-              name="role"
               readonly
               class="readonly-field">
           </mat-form-field>
         </div>
 
-        <!-- ══ SECTION 2: Change Password ════════════════════ -->
-        <h3 class="section-title" style="margin-top: 24px;">Change Password</h3>
+        <!-- Section 2: Change Password -->
+        <h3 class="section-title" style="margin-top:28px;">Change Password</h3>
 
-        <!-- Current Password — full width -->
         <div class="form-group">
           <label class="form-label">Current Password</label>
           <mat-form-field appearance="outline" class="full-width">
-            <input
-              matInput
+            <input matInput
               [type]="hideCurrentPassword ? 'password' : 'text'"
               [(ngModel)]="passwordForm.currentPassword"
               name="currentPassword"
@@ -104,18 +140,15 @@
           </mat-form-field>
         </div>
 
-        <!-- New Password + Confirm Password — side by side -->
         <div class="form-row">
-
           <div class="form-group">
             <label class="form-label">New Password</label>
             <mat-form-field appearance="outline" class="full-width">
-              <input
-                matInput
+              <input matInput
                 [type]="hideNewPassword ? 'password' : 'text'"
                 [(ngModel)]="passwordForm.newPassword"
                 name="newPassword"
-                placeholder="Enter new password">
+                placeholder="Min. 6 characters">
               <button mat-icon-button matSuffix type="button"
                 (click)="hideNewPassword = !hideNewPassword">
                 <mat-icon style="font-size:18px;">
@@ -128,12 +161,11 @@
           <div class="form-group">
             <label class="form-label">Confirm Password</label>
             <mat-form-field appearance="outline" class="full-width">
-              <input
-                matInput
+              <input matInput
                 [type]="hideConfirmPassword ? 'password' : 'text'"
                 [(ngModel)]="passwordForm.confirmPassword"
                 name="confirmPassword"
-                placeholder="Confirm new password">
+                placeholder="Repeat new password">
               <button mat-icon-button matSuffix type="button"
                 (click)="hideConfirmPassword = !hideConfirmPassword">
                 <mat-icon style="font-size:18px;">
@@ -142,47 +174,36 @@
               </button>
             </mat-form-field>
           </div>
-
         </div>
 
-        <!-- ── Action Buttons Row ────────────────────────────── -->
+        <!-- Action buttons -->
         <div class="actions-row">
+          <button
+            mat-stroked-button
+            class="password-btn"
+            type="button"
+            [disabled]="isChangingPassword || !passwordForm.currentPassword"
+            (click)="changePassword()">
+            <mat-spinner *ngIf="isChangingPassword" diameter="16"
+              style="display:inline-block; margin-right:6px;">
+            </mat-spinner>
+            {{ isChangingPassword ? 'Changing...' : 'Change Password' }}
+          </button>
 
-          <!-- Save Profile Changes -->
           <button
             mat-raised-button
             class="update-btn"
             type="button"
             [disabled]="isSavingProfile"
             (click)="saveProfile()">
-            <mat-spinner
-              *ngIf="isSavingProfile"
-              diameter="16"
+            <mat-spinner *ngIf="isSavingProfile" diameter="16"
               style="display:inline-block; margin-right:6px;">
             </mat-spinner>
             {{ isSavingProfile ? 'Saving...' : 'Update Profile' }}
           </button>
-
-          <!-- Change Password (only visible if password fields have data) -->
-          <button
-            mat-stroked-button
-            class="password-btn"
-            type="button"
-            *ngIf="passwordForm.currentPassword"
-            [disabled]="isChangingPassword"
-            (click)="changePassword()">
-            <mat-spinner
-              *ngIf="isChangingPassword"
-              diameter="16"
-              style="display:inline-block; margin-right:6px;">
-            </mat-spinner>
-            {{ isChangingPassword ? 'Changing...' : 'Change Password' }}
-          </button>
-
         </div>
 
       </div>
-      <!-- end right-col -->
 
     </mat-card-content>
   </mat-card>

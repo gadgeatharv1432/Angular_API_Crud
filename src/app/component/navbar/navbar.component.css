@@ -1,4 +1,5 @@
-/* The Material toolbar base */
+/* src/app/component/navbar/navbar.component.css */
+
 .navbar {
     background: white !important;
     color: #111827 !important;
@@ -12,20 +13,43 @@
     z-index: 100;
 }
 
-/* Spacer pushes right items to far right */
-.spacer {
-    flex: 1 1 auto;
+.spacer { flex: 1 1 auto; }
+
+/* Search box */
+.search-box {
+    display: flex;
+    align-items: center;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 7px 14px;
+    gap: 8px;
+    min-width: 280px;
+    cursor: text;
 }
 
-/* Right side of navbar */
+.search-icon {
+    color: #9ca3af;
+    font-size: 17px;
+    width: 17px;
+    height: 17px;
+    line-height: 17px;
+}
+
+.search-placeholder {
+    color: #9ca3af;
+    font-size: 13px;
+    user-select: none;
+}
+
 .navbar-right {
     display: flex;
     align-items: center;
     gap: 4px;
 }
 
-/* User info block */
-.user-info {
+/* User trigger — the clickable area that opens the dropdown */
+.user-trigger {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -35,29 +59,58 @@
     transition: background 0.15s;
 }
 
-.user-info:hover {
-    background: #f3f4f6;
+.user-trigger:hover { background: #f3f4f6; }
+
+/* Photo avatar in navbar */
+/* TEACHING: object-fit: cover crops the image to fill the circle
+   without stretching or distorting it */
+.nav-avatar-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e5e7eb;
+    flex-shrink: 0;
 }
 
-.user-info mat-icon {
-    color: #6b7280;
-    font-size: 26px;
-    width: 26px;
-    height: 26px;
+/* Initial letter avatar in navbar */
+.nav-avatar-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.nav-avatar-circle span {
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.user-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
 }
 
 .user-name {
     font-weight: 500;
     color: #374151;
-    font-size: 14px;
+    font-size: 13px;
 }
 
-/* Role badge — blue pill */
-.user-role-badge {
-    background: #dbeafe;
-    color: #1d4ed8;
-    padding: 2px 8px;
-    border-radius: 20px;
+.user-role {
     font-size: 11px;
-    font-weight: 600;
+    color: #9ca3af;
+}
+
+.chevron-icon {
+    color: #9ca3af;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
 }

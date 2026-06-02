@@ -1,40 +1,24 @@
-.page-container {
-    max-width: 900px;
-}
+/* src/app/component/profile/profile.component.css */
 
-/* Page header */
-.page-header {
-    margin-bottom: 24px;
-}
+.page-container { max-width: 900px; }
 
+.page-header { margin-bottom: 24px; }
 .page-title {
     font-size: 26px;
     font-weight: 700;
     color: #111827;
     margin: 0;
 }
+.page-subtitle { color: #6b7280; font-size: 14px; margin: 4px 0 0; }
 
-.page-subtitle {
-    color: #6b7280;
-    font-size: 14px;
-    margin: 4px 0 0;
-}
+.loading-container { display: flex; justify-content: center; padding: 60px; }
 
-/* Loading state */
-.loading-container {
-    display: flex;
-    justify-content: center;
-    padding: 60px;
-}
-
-/* Main white card */
 .profile-card {
     border-radius: 12px !important;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08) !important;
     border: 1px solid #f3f4f6 !important;
 }
 
-/* Card content: flex row — left col + right col */
 .card-content {
     display: flex !important;
     gap: 48px;
@@ -42,46 +26,106 @@
     align-items: flex-start;
 }
 
-/* ── LEFT COLUMN ──────────────────────────────────── */
+/* ── LEFT COLUMN ── */
 .left-col {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 160px;
-    flex-shrink: 0;    /* Never shrink — stays at 160px always */
+    flex-shrink: 0;
     padding-top: 8px;
 }
 
-/* Avatar circle — large, shows user's initial */
+/* TEACHING: The avatar wrap uses position:relative so the
+   overlay (position:absolute) is positioned relative to IT,
+   not the whole page. This is the standard overlay pattern. */
+.avatar-wrap {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    margin-bottom: 16px;
+    border-radius: 50%;
+}
+
+/* Uploaded photo */
+.avatar-img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;        /* Crops image to fill circle — no distortion */
+    display: block;
+    border: 3px solid #e5e7eb;
+}
+
+/* Initial letter circle (no photo) */
 .avatar-circle {
-    width: 100px;
-    height: 100px;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
     background: linear-gradient(135deg, #2563eb, #7c3aed);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 16px;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.30);
+    border: 3px solid transparent;
 }
 
 .avatar-initial {
     color: white;
-    font-size: 40px;
+    font-size: 44px;
     font-weight: 700;
     line-height: 1;
 }
 
-/* Upload Photo button */
+/* TEACHING: The camera overlay
+   - position: absolute → sits ON TOP of the avatar
+   - inset: 0 → fills the entire parent (shorthand for top/right/bottom/left: 0)
+   - opacity: 0 → invisible by default
+   - border-radius: 50% → matches the circular avatar
+   - transition → smooth fade in/out
+   On hover of .avatar-wrap, opacity becomes 1 → overlay appears */
+.avatar-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.avatar-overlay mat-icon {
+    color: white;
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+}
+
+/* Show overlay when hovering the avatar-wrap */
+.avatar-wrap:hover .avatar-overlay {
+    opacity: 1;
+}
+
 .upload-btn {
     width: 100%;
     border-color: #d1d5db !important;
     color: #374151 !important;
     font-size: 13px !important;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
 }
 
-/* File type hint */
+.remove-btn {
+    color: #dc2626 !important;
+    font-size: 12px !important;
+    height: 28px !important;
+    margin-bottom: 4px;
+}
+
 .upload-hint {
     font-size: 11px;
     color: #9ca3af;
@@ -90,34 +134,21 @@
     line-height: 1.4;
 }
 
-/* ── RIGHT COLUMN ─────────────────────────────────── */
-.right-col {
-    flex: 1;           /* Takes all remaining space */
-    min-width: 0;      /* Prevents overflow in flex containers */
-}
+/* ── RIGHT COLUMN ── */
+.right-col { flex: 1; min-width: 0; }
 
-/* Section titles */
 .section-title {
     font-size: 17px;
     font-weight: 600;
     color: #111827;
     margin: 0 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f3f4f6;
 }
 
-/* Two-column form row */
-.form-row {
-    display: flex;
-    gap: 16px;
-}
+.form-row { display: flex; gap: 16px; }
+.form-group { flex: 1; min-width: 0; margin-bottom: 4px; }
 
-/* Individual form group */
-.form-group {
-    flex: 1;
-    min-width: 0;
-    margin-bottom: 4px;
-}
-
-/* Label above each field */
 .form-label {
     display: block;
     font-size: 13px;
@@ -126,28 +157,10 @@
     margin-bottom: 4px;
 }
 
-/* Full width fields */
-.full-width {
-    width: 100%;
-}
+.full-width { width: 100%; }
 
-/* Read-only fields — visual grey to show non-editable */
-.readonly-field {
-    color: #6b7280 !important;
-    cursor: default !important;
-}
+.readonly-field { color: #9ca3af !important; cursor: default; }
 
-/* Style the mat-form-field when it contains a readonly input */
-::ng-deep .full-width.mat-mdc-form-field:has(.readonly-field) 
-  .mdc-notched-outline__leading,
-::ng-deep .full-width.mat-mdc-form-field:has(.readonly-field) 
-  .mdc-notched-outline__notch,
-::ng-deep .full-width.mat-mdc-form-field:has(.readonly-field) 
-  .mdc-notched-outline__trailing {
-    border-color: #e5e7eb !important;
-}
-
-/* Actions row at bottom — right-aligned */
 .actions-row {
     display: flex;
     justify-content: flex-end;
@@ -157,7 +170,6 @@
     border-top: 1px solid #f3f4f6;
 }
 
-/* Primary Update Profile button — blue like PDF */
 .update-btn {
     background: #2563eb !important;
     color: white !important;
@@ -169,17 +181,15 @@
     align-items: center;
 }
 
-.update-btn:disabled {
-    background: #93c5fd !important;
-}
+.update-btn:disabled { background: #93c5fd !important; }
 
-/* Secondary Change Password button */
 .password-btn {
-    border-color: #2563eb !important;
-    color: #2563eb !important;
-    font-weight: 500 !important;
+    border-color: #d1d5db !important;
+    color: #374151 !important;
     height: 40px;
     padding: 0 20px !important;
     display: flex !important;
     align-items: center;
 }
+
+.password-btn:disabled { opacity: 0.5; }

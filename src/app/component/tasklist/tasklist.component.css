@@ -235,3 +235,29 @@
     font-size: 13px;
     color: #6b7280;
 }
+
+/* Add to tasklist.component.css */
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0 0;
+}
+
+.search-field {
+    flex: 1;
+    max-width: 400px;
+}
+
+/* Make search field shorter */
+::ng-deep .search-field .mat-mdc-form-field-infix {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    min-height: unset !important;
+}
+
+.result-count {
+    color: #9ca3af;
+    font-size: 13px;
+    white-space: nowrap;
+}

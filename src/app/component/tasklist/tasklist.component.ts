@@ -10,32 +10,37 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';   // ← NEW: for tab filtering
 import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import Swal from 'sweetalert2';
-
 import { Task } from '../../interfaces/task';
 import { TaskserviceService } from '../../service/taskservice.service';
 import { TaskDialogComponent } from '../../task-dialog/task-dialog/task-dialog.component';
 
 @Component({
-    selector: 'app-tasklist',
-    standalone: true,
-    imports: [
-        CommonModule,
-        FormsModule,
-        MatTableModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatChipsModule,
-        MatTooltipModule,
-        MatProgressSpinnerModule,
-        MatTabsModule
-    ],
-    templateUrl: './tasklist.component.html',
-    styleUrl: './tasklist.component.css'
+  selector: 'app-tasklist',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatChipsModule,
+    MatTooltipModule,
+    MatProgressSpinnerModule,
+    MatTabsModule,
+
+    // Required for search bar
+    MatFormFieldModule,
+    MatInputModule
+  ],
+  templateUrl: './tasklist.component.html',
+  styleUrl: './tasklist.component.css'
 })
 export class TasklistComponent implements OnInit {
-
+    searchText: string = '';
     allTasks: Task[] = [];
     filteredTasks: Task[] = [];
 
@@ -64,7 +69,7 @@ export class TasklistComponent implements OnInit {
             next: (res) => {
                 this.isLoading = false;
                 this.allTasks = res.data;
-                this.applyTabFilter();  // Apply current tab filter after load
+                this.applyFilters();  // Apply current tab filter after load
             },
             error: () => {
                 this.isLoading = false;
@@ -73,36 +78,47 @@ export class TasklistComponent implements OnInit {
         });
     }
 
-    // ── Tab filtering logic ────────────────────────────────────
-    // WHY: PDF has 3 tabs. Each tab shows a filtered subset.
-    // Tab 0 = All Tasks (no filter)
-    // Tab 1 = Active (Todo + InProgress — not done)
-    // Tab 2 = Completed (Done only)
+    // ── Tab filtering logic 
     onTabChange(index: number): void {
-        this.activeTabIndex = index;
-        this.applyTabFilter();
+    this.activeTabIndex = index;
+    this.applyFilters();  // Re-apply BOTH filters
+    }
+    applySearch(): void {
+        this.applyFilters();  // Re-apply BOTH filters
     }
 
-    applyTabFilter(): void {
+    // THE CORE METHOD — chains tab filter then search filter
+    applyFilters(): void {
+        // STAGE 1: Apply tab filter to the original source of truth
+        // WHY use allTasks here (not filteredTasks)?
+        // If we filtered filteredTasks, each search would narrow the list
+        // further and further — you'd never see items back.
+        // Always filter from the ORIGINAL complete list.
+        let result = this.getTabFiltered();
+
+        // STAGE 2: Apply search text filter on top of Stage 1 result
+        const term = this.searchText?.toLowerCase().trim();
+        if (term) {
+            result = result.filter(t =>
+                t.taskName.toLowerCase().includes(term)      ||
+                t.assignee.toLowerCase().includes(term)      ||
+                t.taskStatus.toLowerCase().includes(term)    ||
+                t.taskPriority.toLowerCase().includes(term)  ||
+                t.taskDescription?.toLowerCase().includes(term)
+            );
+        }
+
+        this.filteredTasks = result;
+    }
+
+    private getTabFiltered(): Task[] {
         switch (this.activeTabIndex) {
-            case 0:  // All Tasks
-                this.filteredTasks = [...this.allTasks];
-                break;
-            case 1:  // Active = not completed
-                this.filteredTasks = this.allTasks.filter(
-                    t => t.taskStatus !== 'Done'
-                );
-                break;
-            case 2:  // Completed
-                this.filteredTasks = this.allTasks.filter(
-                    t => t.taskStatus === 'Done'
-                );
-                break;
-            default:
-                this.filteredTasks = [...this.allTasks];
+            case 0: return [...this.allTasks];
+            case 1: return this.allTasks.filter(t => t.taskStatus !== 'Done');
+            case 2: return this.allTasks.filter(t => t.taskStatus === 'Done');
+            default: return [...this.allTasks];
         }
     }
-
     // ── Toggle task complete (circle checkbox click) ──────────
     // WHY: PDF shows circle checkboxes. Clicking marks task done.
     toggleComplete(task: Task): void {
